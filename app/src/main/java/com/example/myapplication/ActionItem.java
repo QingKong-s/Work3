@@ -15,7 +15,6 @@ public class ActionItem {
         this.isExpanded = false;
     }
 
-    // Getters and Setters
     public String getTitle() { return title; }
     public int getSets() { return sets; }
     public boolean isExpanded() { return isExpanded; }

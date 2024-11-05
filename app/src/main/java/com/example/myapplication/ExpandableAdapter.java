@@ -3,8 +3,10 @@ package com.example.myapplication;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -33,8 +35,9 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         throw new IllegalStateException("Invalid position");
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_MAIN) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
             return new MainViewHolder(view);
@@ -45,7 +48,7 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int count = 0;
         for (ActionItem item : items) {
             if (position == count) {
@@ -54,9 +57,12 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
             count++;
             if (item.isExpanded()) {
+                int i = 0;
                 for (SubItem subItem : item.getSubItems()) {
+                    ++i;
                     if (position == count) {
                         ((SubViewHolder) holder).bind(subItem);
+                        ((SubViewHolder) holder).initNumber(i);
                         return;
                     }
                     count++;
@@ -103,11 +109,13 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     class SubViewHolder extends RecyclerView.ViewHolder {
-        private TextView weight;
-        private TextView repetitions;
+        private EditText weight;
+        private EditText repetitions;
+        private TextView no;
 
         public SubViewHolder(View itemView) {
             super(itemView);
+            no = itemView.findViewById(R.id.no);
             weight = itemView.findViewById(R.id.weight);
             repetitions = itemView.findViewById(R.id.repetitions);
         }
@@ -115,6 +123,10 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public void bind(SubItem subItem) {
             weight.setText(subItem.getWeight() + " kg");
             repetitions.setText(subItem.getRepetitions() + " reps");
+        }
+
+        public void initNumber(int i) {
+            no.setText(Integer.toString(i));
         }
     }
 

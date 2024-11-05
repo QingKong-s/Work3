@@ -11,7 +11,6 @@ public class SubItem {
         this.isCompleted = isCompleted;
     }
 
-    // Getters
     public String getWeight() { return weight; }
     public String getRepetitions() { return repetitions; }
     public boolean isCompleted() { return isCompleted; }
