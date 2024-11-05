@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         actionItems.add(new ActionItem("动作1", 6, subItems1));
         actionItems.add(new ActionItem("动作2", 4, subItems2));
         actionItems.add(new ActionItem("动作3", 5, subItems3));
-
+        actionItems.add(new ActionItem("动作4", 5, subItems3));
+        actionItems.add(new ActionItem("动作5", 5, subItems3));
 
         RecyclerView recyclerView = findViewById(R.id.mainList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
