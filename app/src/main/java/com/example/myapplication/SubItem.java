@@ -1,17 +1,37 @@
 package com.example.myapplication;
 
 public class SubItem {
-    private String weight;
-    private String repetitions;
+    private int weight;
+    private int repetitions;
     private boolean isCompleted;
 
-    public SubItem(String weight, String repetitions, boolean isCompleted) {
+    public SubItem(int weight, int repetitions, boolean isCompleted) {
         this.weight = weight;
         this.repetitions = repetitions;
         this.isCompleted = isCompleted;
     }
 
-    public String getWeight() { return weight; }
-    public String getRepetitions() { return repetitions; }
-    public boolean isCompleted() { return isCompleted; }
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getRepetitions() {
+        return repetitions;
+    }
+
+    public void setRepetitions(int repetitions) {
+        this.repetitions = repetitions;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
 }
