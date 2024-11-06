@@ -38,4 +38,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+    implementation("com.squareup.okhttp3:okhttp:3.12.0")
+    implementation("com.google.code.gson:gson:2.8.5")
 }
