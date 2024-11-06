@@ -5,15 +5,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.service.credentials.Action;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -25,7 +29,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     String url1="http://10.0.2.2:9000";
-
+    List<Action> actions = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,16 +52,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addPlan(){
+        // 添加一些 Action 对象到列表
+        
+        actions.add(new Action(1, 50, 10));
+        actions.add(new Action(2, 75, 15));
+        actions.add(new Action(3, 40.0, 8));
+        
         OkHttpClient client = new OkHttpClient();
+        //JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
 
-        JSONObject jsonObject = new JSONObject();
+        int n=4;//动作数量
         try {
-            jsonObject.put("username", "123");
-            jsonObject.put("password", "123");
-        } catch (JSONException e) {
+            for (Action action : actions) {
+                // 获取每个 Action 对象的属性
+                int actionId = action.getActionId();
+                double weight = action.getWeight();
+                int count = action.getCount();
+            }
+
+            for(int s=1;s<=n;s++){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("userid", "user");
+                jsonObject.put("age", "21");
+                jsonObject.put("height", "180");
+                jsonObject.put("weight", "130");
+                jsonObject.put("sex", "1");
+                jsonObject.put("actionid", actions.get);
+                jsonObject.put("actionweight", "40");
+                jsonObject.put("actionnumber", "12");
+                jsonArray.put(jsonObject);
+            } }catch (JSONException e) {
             e.printStackTrace();
         }
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
 
         Request request = new Request.Builder()
                 .url(url1)
