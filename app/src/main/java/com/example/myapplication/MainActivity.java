@@ -79,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
                 //mHandler.sendMessage(msg);
             }
         });
+        GlobalData.addNewPlan();
+        runOnUiThread(() -> {
+            PlanAdapter adapter = (PlanAdapter) ((RecyclerView) findViewById(R.id.planList)).getAdapter();
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        });
 
     }
 }

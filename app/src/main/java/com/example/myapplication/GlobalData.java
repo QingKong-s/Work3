@@ -37,4 +37,15 @@ public class GlobalData {
         plans.add(new Plan(actionItems,"计划4"));
         plans.add(new Plan(actionItems,"计划5"));
     }
+
+    public static void addNewPlan() {
+        ArrayList<ActionItem> actionItems = new ArrayList<>();
+        List<SubItem> subItems = new ArrayList<>();
+        subItems.add(new SubItem("50", "10", false));
+        actionItems.add(new ActionItem("新动作", 3, subItems));
+
+        Plan newPlan = new Plan(actionItems, "新计划");
+        plans.add(newPlan);
+    }
+
 }
