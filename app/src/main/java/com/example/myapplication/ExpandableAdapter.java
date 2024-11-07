@@ -161,7 +161,7 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     if (actionItem != null) {
                         List<SubItem> sub = actionItem.getSubItems();
                         if (sub != null) {
-                            repetitions.setText(sub.get(idx).getWeight() + " reps");
+                            repetitions.setText(sub.get(idx).getRepetitions() + " reps");
                         }
                     }
                 }

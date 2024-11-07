@@ -5,6 +5,8 @@ public class SubItem {
     private int repetitions;
     private boolean isCompleted;
 
+    public SubItem() {}
+
     public SubItem(int weight, int repetitions, boolean isCompleted) {
         this.weight = weight;
         this.repetitions = repetitions;

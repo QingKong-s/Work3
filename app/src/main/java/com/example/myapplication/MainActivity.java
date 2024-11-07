@@ -35,16 +35,19 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.planList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Button addPlan = findViewById(R.id.addPlan);
-        GlobalData.initSampleData();
+
+        GlobalData.plans = Utils.loadPlans(this);
+
         PlanAdapter adapter = new PlanAdapter(this, GlobalData.plans);
         recyclerView.setAdapter(adapter);
-        addPlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addPlan();
 
-            }
-        });
+        addPlan.setOnClickListener(v -> addPlan());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Utils.savePlans(this, GlobalData.plans);
     }
 
     private void addPlan(){
@@ -73,15 +76,12 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String res = response.body().string(); // 获取图书数据
                 Log.e("response", res);
-                //Message msg = new Message();
-                // msg.what = MSG_SHOP_OK;
-                // msg.obj = res;
-                //mHandler.sendMessage(msg);
             }
         });
         GlobalData.addNewPlan();
         runOnUiThread(() -> {
-            PlanAdapter adapter = (PlanAdapter) ((RecyclerView) findViewById(R.id.planList)).getAdapter();
+            PlanAdapter adapter = (PlanAdapter)
+                    ((RecyclerView)findViewById(R.id.planList)).getAdapter();
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
             }
