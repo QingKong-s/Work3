@@ -1,10 +1,13 @@
 import joblib
 
 def get_predict(data):
+    # 通过决策树 预测训练效果
+    # print(data)
     data = tmp_modify(data)
     action_id = data['action_id']
-    path = '../decision_trees/decision_tree_model'
+    path = '../decision_trees/decision_tree_model_'
     suf = '.pkl'
+    print(action_id)
     # 提取特征
     x = [
         data['age'],
@@ -32,9 +35,12 @@ def get_predict(data):
         return None
 
 def create_message(data):
+    # 根据训练效果 返回讯息
     prediction = []
+    print(data)
     for i in data:
-        prediction.append(get_predict(i))
+        print(i)
+        prediction.append(get_predict(i)[0])
     message = ""
     message_easy = "第"
     arr_easy = []
@@ -78,4 +84,19 @@ def more_action(message,prediction):
 
 def load_graph():
     # 暂时没有对运动 部位建模
+
     return
+
+tmp_data = {}
+tmp_data['age'] = 21
+tmp_data['action_id'] = 2
+tmp_data['height'] = 170
+tmp_data['weight'] = 140
+tmp_data['history'] = 50
+tmp_data['sex'] = 0
+tmp_data['action_weight'] = 45
+tmp_data['action_account'] = 8
+tot = [tmp_data]
+print(get_predict(tmp_data))
+print(tot)
+print(create_message(tot))

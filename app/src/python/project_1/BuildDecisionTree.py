@@ -39,7 +39,7 @@ print(train_data.info())
     数据预处理
 """
 # 指定第一列作为行索引
-train_data = pd.read_csv("./data/train.csv", index_col = 0)
+# train_data = pd.read_csv("./data/train.csv", index_col = 0)
 # 处理缺失数据：这里用最简单的0值填充
 # train_data = train_data.fillna(0)
 
@@ -51,7 +51,7 @@ X = train_data.drop("score", axis=1).values
 
 # print(y)
 # print(X)
-# print("X.shape: ", X.shape)
+print("X.shape: ", X.shape)
 # print(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 print("X_train shape:", X_train.shape, "X_test shape:", X_test.shape)
