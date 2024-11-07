@@ -75,7 +75,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
 
         builder.setNeutralButton("删除", (dialog, which) -> {
             data.remove(position);
-            notifyItemRemoved(position);
+            notifyDataSetChanged();
         });
 
         builder.setNegativeButton("取消", (dialog, which) -> dialog.cancel());
