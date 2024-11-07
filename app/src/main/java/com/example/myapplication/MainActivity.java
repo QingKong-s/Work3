@@ -29,7 +29,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     String url1="http://10.0.2.2:9000";
-    List<Action> actions = new ArrayList<>();
+    List<action> actions = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -54,42 +54,46 @@ public class MainActivity extends AppCompatActivity {
     private void addPlan(){
         // 添加一些 Action 对象到列表
         
-        actions.add(new Action(1, 50, 10));
-        actions.add(new Action(2, 75, 15));
-        actions.add(new Action(3, 40.0, 8));
+
         
         OkHttpClient client = new OkHttpClient();
         //JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        int n=4;//动作数量
+        actions.add(new action(1, 50, 10));
+        actions.add(new action(2, 75, 15));
+        actions.add(new action(3, 40, 8));
+
         try {
-            for (Action action : actions) {
+            for (action action : actions) {
                 // 获取每个 Action 对象的属性
                 int actionId = action.getActionId();
                 double weight = action.getWeight();
                 int count = action.getCount();
-            }
 
-            for(int s=1;s<=n;s++){
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("userid", "user");
                 jsonObject.put("age", "21");
                 jsonObject.put("height", "180");
                 jsonObject.put("weight", "130");
                 jsonObject.put("sex", "1");
-                jsonObject.put("actionid", actions.get);
-                jsonObject.put("actionweight", "40");
-                jsonObject.put("actionnumber", "12");
+                jsonObject.put("actionid", actionId);
+                jsonObject.put("actionweight", weight);
+                jsonObject.put("actionnumber", count);
                 jsonArray.put(jsonObject);
-            } }catch (JSONException e) {
+
+
+            }
+
+             }catch (JSONException e) {
             e.printStackTrace();
         }
+        //Log.i("111", jsonArray.toString());//测试发送的文件
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
 
         Request request = new Request.Builder()
                 .url(url1)
-                .get()
+                .post(requestBody)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
