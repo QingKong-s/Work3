@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -54,9 +55,10 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int count = 0;
+        int j = 0;
         for (ActionItem item : items) {
             if (position == count) {
-                ((MainViewHolder) holder).bind(item);
+                ((MainViewHolder) holder).bind(item, j);
                 return;
             }
             count++;
@@ -72,6 +74,7 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     ++i;
                 }
             }
+            ++j;
         }
     }
 
@@ -90,6 +93,8 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     class MainViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView sets;
+        private int idx;
+        private ActionItem actItem;
 
         public MainViewHolder(View itemView) {
             super(itemView);
@@ -118,9 +123,51 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             });
         }
 
-        public void bind(ActionItem item) {
+        public void bind(ActionItem item, int idx) {
+            this.idx = idx;
+            actItem = item;
             title.setText(item.getTitle());
             sets.setText(item.getSets() + " sets");
+            itemView.setOnLongClickListener(v -> {
+                showEditDialog(item, idx);
+                return true;
+            });
+        }
+
+        private void showEditDialog(ActionItem actionItem, int idx) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+            builder.setTitle("Edit Action");
+
+            View dialogView = LayoutInflater.from(itemView.getContext())
+                            .inflate(R.layout.dialog_edit_action_item, null);
+            builder.setView(dialogView);
+
+            EditText titleEditText = dialogView.findViewById(R.id.edit_action_title);
+            EditText setsEditText = dialogView.findViewById(R.id.edit_action_sets);
+
+            titleEditText.setText(actionItem.getTitle());
+            setsEditText.setText(String.valueOf(actionItem.getSets()));
+
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                String newTitle = titleEditText.getText().toString();
+                int newSets = Integer.parseInt(setsEditText.getText().toString());
+
+                if (!newTitle.isEmpty()) {
+                    actionItem.setTitle(newTitle);
+                    actionItem.setSets(newSets);
+                    notifyDataSetChanged();
+                }
+            });
+
+            builder.setNeutralButton("Delete", (dialog, which) -> {
+                items.remove(idx);
+                notifyDataSetChanged();
+            });
+
+
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+            builder.show();
         }
     }
 

@@ -17,9 +17,11 @@ public class ActionItem {
         this.isExpanded = false;
     }
 
-    public String getTitle() { return title; }
-    public int getSets() { return sets; }
     public boolean isExpanded() { return isExpanded; }
     public void setExpanded(boolean expanded) { isExpanded = expanded; }
     public List<SubItem> getSubItems() { return subItems; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public int getSets() { return sets; }
+    public void setSets(int sets) { this.sets = sets; }
 }
