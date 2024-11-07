@@ -8,6 +8,8 @@ public class ActionItem {
     private boolean isExpanded;
     private List<SubItem> subItems;
 
+    public ActionItem() {}
+
     public ActionItem(String title, int sets, List<SubItem> subItems) {
         this.title = title;
         this.sets = sets;

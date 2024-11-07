@@ -1,14 +1,18 @@
 package com.example.myapplication;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -59,13 +63,13 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (item.isExpanded()) {
                 int i = 0;
                 for (SubItem subItem : item.getSubItems()) {
-                    ++i;
                     if (position == count) {
-                        ((SubViewHolder) holder).bind(subItem);
-                        ((SubViewHolder) holder).initNumber(i);
+                        ((SubViewHolder)holder).init(i, item);
+                        ((SubViewHolder)holder).bind(subItem);
                         return;
                     }
-                    count++;
+                    ++count;
+                    ++i;
                 }
             }
         }
@@ -100,6 +104,18 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     notifyDataSetChanged();
                 }
             });
+
+            itemView.findViewById(R.id.addSub).setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                ActionItem item = getItemAtPosition(position);
+                if (item != null) {
+                    List<SubItem> sub = item.getSubItems();
+                    if (sub != null) {
+                        sub.add(new SubItem(10, 1, false));
+                        notifyDataSetChanged();
+                    }
+                }
+            });
         }
 
         public void bind(ActionItem item) {
@@ -112,21 +128,98 @@ public class ExpandableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private EditText weight;
         private EditText repetitions;
         private TextView no;
+        private Button complete;
+        private int idx;
+        private ActionItem actionItem;
 
         public SubViewHolder(View itemView) {
             super(itemView);
             no = itemView.findViewById(R.id.no);
             weight = itemView.findViewById(R.id.weight);
             repetitions = itemView.findViewById(R.id.repetitions);
+            complete = itemView.findViewById(R.id.complete);
+
+            complete.setOnClickListener(v -> {
+                SubItem sub = actionItem.getSubItems().get(idx);
+                sub.setCompleted(!sub.isCompleted());
+                updateButtonText();
+            });
+
+            weight.setOnFocusChangeListener((v, hasFocus) -> {
+                if (!hasFocus) {
+                    if (actionItem != null) {
+                        List<SubItem> sub = actionItem.getSubItems();
+                        if (sub != null) {
+                            weight.setText(sub.get(idx).getWeight() + " kg");
+                        }
+                    }
+                }
+            });
+
+            repetitions.setOnFocusChangeListener((v, hasFocus) -> {
+                if (!hasFocus) {
+                    if (actionItem != null) {
+                        List<SubItem> sub = actionItem.getSubItems();
+                        if (sub != null) {
+                            repetitions.setText(sub.get(idx).getRepetitions() + " reps");
+                        }
+                    }
+                }
+            });
+
+            weight.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (actionItem != null) {
+                        List<SubItem> sub = actionItem.getSubItems();
+                        if (sub != null) {
+                            Integer i = Utils.convertPrefixToInt(s.toString());
+                            sub.get(idx).setWeight(i);
+                        }
+                    }
+                }
+            });
+
+            repetitions.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (actionItem != null) {
+                        List<SubItem> sub = actionItem.getSubItems();
+                        if (sub != null) {
+                            Integer i = Utils.convertPrefixToInt(s.toString());
+                            sub.get(idx).setRepetitions(i);
+                        }
+                    }
+                }
+            });
         }
 
         public void bind(SubItem subItem) {
             weight.setText(subItem.getWeight() + " kg");
             repetitions.setText(subItem.getRepetitions() + " reps");
+            updateButtonText();
         }
 
-        public void initNumber(int i) {
+        public void init(int i, ActionItem actionItem) {
+            idx = i;
+            this.actionItem = actionItem;
             no.setText(Integer.toString(i));
+        }
+
+        public void updateButtonText() {
+            SubItem sub = actionItem.getSubItems().get(idx);
+            if (sub.isCompleted())
+                complete.setText("已完成");
+            else
+                complete.setText("完成");
         }
     }
 

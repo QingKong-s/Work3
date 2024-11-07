@@ -6,6 +6,8 @@ public class Plan {
     private ArrayList<ActionItem> actions;
     private String name;
 
+    public Plan() {}
+
     public Plan(ArrayList<ActionItem> actions,String name) {
         this.actions = actions;
         this.name = name;
