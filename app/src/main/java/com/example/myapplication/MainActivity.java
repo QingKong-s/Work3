@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.service.credentials.Action;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +29,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
     String url1="http://10.0.2.2:9000";
     List<action> actions = new ArrayList<>();
+    String res;//获取的数据
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.planList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Button addPlan = findViewById(R.id.addPlan);
+        Button recommendplan=findViewById(R.id.button4);
 
         GlobalData.plans = Utils.loadPlans(this);
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         addPlan.setOnClickListener(v -> addPlan());
+        recommendplan.setOnClickListener(v ->recommendplan());
     }
 
     @Override
@@ -106,8 +108,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String res = response.body().string(); // 获取图书数据
+                res = response.body().string(); // 获取数据
                 Log.e("response", res);
+                try {
+                    // 使用 JSONObject 来解析 JSON 字符串
+                    JSONObject jsonObject1 = new JSONObject(res);
+
+                    // 提取数据
+                    String status = jsonObject1.getString("status");
+                    String receivedData = jsonObject1.getString("received_data");
+                    saveRes(receivedData);
+                    // receivedData 已经自动转化为中文字符
+                    Log.d("Received Data", receivedData);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         GlobalData.addNewPlan();
@@ -118,6 +134,20 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+
+    }
+    private void saveRes(String res){
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+// 存储数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("res", res);
+        editor.apply();
+    }
+    private void recommendplan(){
+        Intent intent = new Intent(MainActivity.this, recomActivity.class);
+        startActivity(intent);
+
 
     }
 }
