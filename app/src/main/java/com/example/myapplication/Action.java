@@ -1,12 +1,12 @@
 package com.example.myapplication;
 
-public class action {
+public class Action {
     private int actionId;    // 动作编号
     private int weight;    // 动作重量
     private int count;        // 动作数量
 
     // 构造方法
-    public action(int actionId, int weight, int count) {
+    public Action(int actionId, int weight, int count) {
         this.actionId = actionId;
         this.weight = weight;
         this.count = count;

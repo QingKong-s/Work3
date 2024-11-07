@@ -16,7 +16,7 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".recomActivity"
+            android:name=".RecomActivity"
             android:exported="false" />
         <activity
             android:name=".PlanActivity"

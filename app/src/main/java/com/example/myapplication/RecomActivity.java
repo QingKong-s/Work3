@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class recomActivity extends AppCompatActivity {
+public class RecomActivity extends AppCompatActivity {
     String res;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class recomActivity extends AppCompatActivity {
 
     }
     private void back(){
-        Intent intent=new Intent(recomActivity.this,MainActivity.class);
+        Intent intent=new Intent(RecomActivity.this,MainActivity.class);
         startActivity(intent);
     }
 }

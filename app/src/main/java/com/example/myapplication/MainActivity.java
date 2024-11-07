@@ -28,7 +28,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     String url1="http://10.0.2.2:9000";
-    List<action> actions = new ArrayList<>();
+    List<Action> Actions = new ArrayList<>();
     String res;//获取的数据
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.planList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Button addPlan = findViewById(R.id.addPlan);
-        Button recommendplan=findViewById(R.id.button4);
+        Button recommendPlan = findViewById(R.id.button4);
 
         GlobalData.plans = Utils.loadPlans(this);
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         addPlan.setOnClickListener(v -> addPlan());
-        recommendplan.setOnClickListener(v ->recommendplan());
+        recommendPlan.setOnClickListener(v ->recommendplan());
     }
 
     @Override
@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
         //JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        actions.add(new action(1, 50, 10));
-        actions.add(new action(2, 75, 15));
-        actions.add(new action(3, 40, 8));
+        Actions.add(new Action(1, 50, 10));
+        Actions.add(new Action(2, 75, 15));
+        Actions.add(new Action(3, 40, 8));
 
         try {
-            for (action action : actions) {
+            for (Action action : Actions) {
                 // 获取每个 Action 对象的属性
                 int actionId = action.getActionId();
                 double weight = action.getWeight();
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
     private void recommendplan(){
-        Intent intent = new Intent(MainActivity.this, recomActivity.class);
+        Intent intent = new Intent(MainActivity.this, RecomActivity.class);
         startActivity(intent);
 
 
